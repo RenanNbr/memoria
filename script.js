@@ -9,7 +9,7 @@ let timer;
 let playerTurn = 0; // 0 para Jogador 1, 1 para Jogador 2
 
 const themes = {
-    fruits: ['🍎', '🍌', '🍇', '🍓'],
+    fruits: ['🍎', '🍌', '🍇', '🍓', 'a', 'b', 'c','2'],
     animals: ['🐶', '🐱', '🐰', '🐸'],
     emojis: ['😊', '😂', '😍', '😎'],
     characters: ['👨‍🎤', '👩‍🎤', '👨‍🚀', '👩‍🚒']
