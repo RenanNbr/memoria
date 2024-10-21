@@ -10,9 +10,8 @@ let playerTurn = 0; // 0 para Jogador 1, 1 para Jogador 2
 
 const themes = {
     fruits: ['🍎', '🍌', '🍇', '🍓', 'a', 'b', 'c','2'],
-    animals: ['🐶', '🐱', '🐰', '🐸'],
-    emojis: ['😊', '😂', '😍', '😎'],
-    characters: ['👨‍🎤', '👩‍🎤', '👨‍🚀', '👩‍🚒']
+    animals: ['🐶', '🐱', '🐰', '🐸','🍎', '🍌', '🍇', '🍓', 'a', 'b', 'c','2'],
+    emojis: ['😊', '😂', '😍', '😎','🍎', '🍌', '🍇', '🍓', 'a', 'b', 'c','2','','','','','🍎', '🍌'],
 };
 
 document.getElementById('start-game').addEventListener('click', startGame);
@@ -23,7 +22,7 @@ function startGame() {
     const mode = document.getElementById('mode').value;
 
     // Define número de cartas com base na dificuldade
-    const numCards = difficulty === 'easy' ? 16 : difficulty === 'medium' ? 8 : 12;
+    const numCards = difficulty === 'easy' ? 16 : difficulty === 'medium' ? 24 : 36;
     cards = [...themes[theme]].slice(0, numCards / 2);
     cards = [...cards, ...cards]; // Duplicar para pares
     cards = shuffle(cards);
@@ -107,7 +106,7 @@ function startTimer() {
         document.getElementById('time').innerText = time;
 
         // Verifica se o tempo acabou
-        if (time >= (document.getElementById('difficulty').value === 'easy' ? 60 : document.getElementById('difficulty').value === 'medium' ? 45 : 30)) {
+        if (time >= (document.getElementById('difficulty').value === 'easy' ? 120 : document.getElementById('difficulty').value === 'medium' ? 60 : 180)) {
             clearInterval(timer);
             endGame();
         }
