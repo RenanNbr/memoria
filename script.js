@@ -11,7 +11,7 @@ let playerTurn = 0; // 0 para Jogador 1, 1 para Jogador 2
 const themes = {
     fruits: ['😊', '😂', '😍', '😎','🍎', '🍌', '🍇', '🍓', 'a', 'b', 'c','2','','','','','🍎', '🍌'],
     animals: ['😊', '😂', '😍', '😎','🍎', '🍌', '🍇', '🍓', 'a', 'b', 'c','2','','','','','🍎', '🍌'],
-    emojis: ['😊', '😂', '😍', '😎','🍎', '🍌', '🍇', '🍓', 'a', 'b', 'c','2','','','','','🍎', '🍌'],
+    emojis: ['<img src="img/emoji.png" alt="">', '<img src="img/emoji.png" alt="">', '<img src="img/emoji.png" alt="">', '<img src="img/emoji.png" alt="">','<img src="img/emoji.png" alt="">', '<img src="img/emoji.png" alt="">', '<img src="img/emoji.png" alt="">', '<img src="img/emoji.png" alt="">', '<img src="img/emoji.png" alt="">', '<img src="img/emoji.png" alt="">', '<img src="img/emoji.png" alt="">','<img src="img/emoji.png" alt="">','<img src="img/emoji.png" alt="">','<img src="img/emoji.png" alt="">','<img src="img/emoji.png" alt="">','<img src="img/emoji.png" alt="">','<img src="img/emoji.png" alt="">', '<img src="img/emoji.png" alt="">'],
 };
 
 document.getElementById('start-game').addEventListener('click', startGame);
@@ -22,7 +22,7 @@ function startGame() {
     const mode = document.getElementById('mode').value;
 
     // Define número de cartas com base na dificuldade
-    const numCards = difficulty === 'easy' ? 16 : difficulty === 'medium' ? 24 : 36;
+    const numCards = difficulty === 'easy' ? 18 : difficulty === 'medium' ? 24 : 36;
     cards = [...themes[theme]].slice(0, numCards / 2);
     cards = [...cards, ...cards]; // Duplicar para pares
     cards = shuffle(cards);
