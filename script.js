@@ -9,9 +9,9 @@ let timer;
 let playerTurn = 0; // 0 para Jogador 1, 1 para Jogador 2
 
 const themes = {
-    fruits: ['😊', '😂', '😍', '😎','🍎', '🍌', '🍇', '🍓', 'a', 'b', 'c','2','','','','','🍎', '🍌'],
-    animals: ['😊', '😂', '😍', '😎','🍎', '🍌', '🍇', '🍓', 'a', 'b', 'c','2','','','','','🍎', '🍌'],
-    emojis: ['<img src="img/emoji.png" alt="">', '<img src="img/emoji.png" alt="">', '<img src="img/emoji.png" alt="">', '<img src="img/emoji.png" alt="">','<img src="img/emoji.png" alt="">', '<img src="img/emoji.png" alt="">', '<img src="img/emoji.png" alt="">', '<img src="img/emoji.png" alt="">', '<img src="img/emoji.png" alt="">', '<img src="img/emoji.png" alt="">', '<img src="img/emoji.png" alt="">','<img src="img/emoji.png" alt="">','<img src="img/emoji.png" alt="">','<img src="img/emoji.png" alt="">','<img src="img/emoji.png" alt="">','<img src="img/emoji.png" alt="">','<img src="img/emoji.png" alt="">', '<img src="img/emoji.png" alt="">'],
+    fruits: ['🍉','🍊','🍋','🍌','🍍','🥭','🍎','🍏','🍐','🍑','🍒','🍓','🥝','🍅','🥥','🥑','🍆','🥔'],
+    animals: ['🦊', '🐻','🐨','🐭','🐼','🐧','🐹','🐰','🐥','🦆','🕊️','🐘','🦔','🐸','🦛','🦉','🐮','🐺',],
+    emoji: ['😊', '😂', '😍', '😎','😀', '😓', '💩', '🤑', '🤩', '😇', '🥶','😤','🧐','🤓','😵','👻','😶', '😇'],
 };
 
 document.getElementById('start-game').addEventListener('click', startGame);
@@ -34,6 +34,7 @@ function startGame() {
     document.getElementById('points').innerText = points[0]; // Resetar exibição de pontuação
     document.getElementById('points2').innerText = points[1]; // Resetar exibição de pontuação jogador 2
 }
+console.log(themes.fruits);
 
 function createBoard() {
     const gameBoard = document.getElementById('game-board');
@@ -164,4 +165,81 @@ function shuffle(array) {
         [array[i], array[j]] = [array[j], array[i]];
     }
     return array;
+}
+
+function createBoard() {
+    const gameBoard = document.getElementById('game-board');
+    gameBoard.innerHTML = ''; // Limpa o tabuleiro antes de criar novas cartas
+    cards.forEach((card, index) => {
+        const cardElement = document.createElement('div');
+        cardElement.classList.add('card');
+        cardElement.setAttribute('data-index', index);
+        cardElement.addEventListener('click', flipCard);
+        
+        // Adiciona um elemento filho para mostrar a imagem/emoji
+        const cardContent = document.createElement('div');
+        cardContent.classList.add('card-content');
+        cardContent.innerHTML = ''; // Inicialmente vazio
+        cardElement.appendChild(cardContent);
+        
+        gameBoard.appendChild(cardElement);
+    });
+}
+
+function flipCard() {
+    if (flippedCards.length < 2) {
+        this.classList.add('flipped');
+        const index = this.getAttribute('data-index');
+        const cardContent = this.querySelector('.card-content');
+        cardContent.innerHTML = cards[index]; // Define o conteúdo da carta como a imagem/emoji
+        flippedCards.push({ card: this, value: cards[index] });
+        
+        // Toca o som de virada
+        document.getElementById('flip-sound').play();
+
+        if (flippedCards.length === 2) {
+            setTimeout(checkMatch, 1000);
+        }
+    }
+}
+
+function checkMatch() {
+    const [first, second] = flippedCards;
+
+    // Verifica se as cartas viradas são iguais
+    if (first.value === second.value) {
+        matchedPairs++;
+        points[playerTurn] += 10; // Pontuação por par encontrado
+        document.getElementById('points').innerText = points[0];
+        document.getElementById('points2').innerText = points[1];
+
+        // Toca o som de match
+        document.getElementById('match-sound').play();
+
+        // Remove os eventos para evitar que sejam viradas novamente
+        first.card.removeEventListener('click', flipCard);
+        second.card.removeEventListener('click', flipCard);
+    } else {
+        // Se não forem iguais, desvira as cartas após um breve atraso
+        setTimeout(() => {
+            first.card.classList.remove('flipped');
+            second.card.classList.remove('flipped');
+            // Limpa o conteúdo das cartas
+            first.card.querySelector('.card-content').innerHTML = '';
+            second.card.querySelector('.card-content').innerHTML = '';
+
+            // Troca o turno entre os jogadores se for o modo de dois jogadores
+            if (document.getElementById('mode').value === 'two') {
+                playerTurn = playerTurn === 0 ? 1 : 0;
+            }
+        }, 1000); // Tempo de espera antes de desvirar as cartas
+    }
+
+    flippedCards = []; // Limpa as cartas viradas
+
+    // Verifica se todos os pares foram encontrados
+    if (matchedPairs === cards.length / 2) {
+        clearInterval(timer);
+        endGame();
+    }
 }
